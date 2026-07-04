@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tutorial @MetaPhilosophiaBot</title>
+<style>
+  :root{
+    --bg1:#fff4e0;
+    --bg2:#e0f7fa;
+    --bg3:#f3e5ff;
+    --accent1:#ff8a65;
+    --accent2:#4fc3f7;
+    --accent3:#ba68c8;
+    --accent4:#66bb6a;
+    --ink:#2b2140;
+    --card:#ffffff;
+    --shadow: 0 10px 30px rgba(80,50,120,0.12);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    color: var(--ink);
+    min-height:100vh;
+    background: linear-gradient(135deg, var(--bg1) 0%, var(--bg2) 50%, var(--bg3) 100%);
+    background-attachment: fixed;
+    padding-bottom: 60px;
+  }
+  .blob{
+    position:fixed; border-radius:50%; filter: blur(60px); opacity:.35; z-index:0; pointer-events:none;
+  }
+  .blob1{width:260px;height:260px; background:var(--accent1); top:-80px; left:-80px;}
+  .blob2{width:320px;height:320px; background:var(--accent2); bottom:-100px; right:-100px;}
+  .blob3{width:220px;height:220px; background:var(--accent3); top:40%; right:-60px;}
+
+  .wrap{ position:relative; z-index:1; max-width:820px; margin:0 auto; padding: 28px 18px 0; }
+
+  header{
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    flex-wrap:wrap; margin-bottom: 18px;
+  }
+  .brand{ display:flex; align-items:center; gap:12px; }
+  .brand .logo{
+    width:52px;height:52px;border-radius:16px;
+    background: linear-gradient(135deg, var(--accent1), var(--accent3));
+    display:flex;align-items:center;justify-content:center;font-size:26px;
+    box-shadow: var(--shadow);
+  }
+  .brand h1{ font-size:1.25rem; margin:0; line-height:1.2; }
+  .brand p.sub{ margin:2px 0 0; font-size:.8rem; color:#6b5b8a; }
+
+  .lang-toggle{
+    display:flex; background:#fff; border-radius:999px; padding:4px; box-shadow: var(--shadow);
+  }
+  .lang-toggle button{
+    border:none; background:transparent; padding:8px 16px; border-radius:999px;
+    font-weight:600; font-size:.85rem; cursor:pointer; color:#8a7ba8; transition:.2s;
+  }
+  .lang-toggle button.active{
+    background: linear-gradient(135deg, var(--accent2), var(--accent3)); color:#fff;
+  }
+
+  .card{
+    background: var(--card); border-radius:22px; padding:22px 22px 24px;
+    box-shadow: var(--shadow); margin-bottom:20px;
+  }
+
+  .intro h2{ margin-top:0; font-size:1.3rem; }
+  .intro p{ line-height:1.65; color:#463b5e; font-size:.97rem; }
+  .intro .quote{
+    border-left:4px solid var(--accent1); background:#fff7ef; padding:10px 14px;
+    border-radius:0 12px 12px 0; font-style:italic; color:#7a5a3a; margin:14px 0;
+  }
+  .pill-row{ display:flex; gap:10px; flex-wrap:wrap; margin-top:14px; }
+  .pill{
+    font-size:.78rem; font-weight:600; padding:6px 12px; border-radius:999px;
+    background:#f1eaff; color:#7a4fbf;
+  }
+
+  .search-box{
+    display:flex; align-items:center; gap:10px; background:#fff;
+    border-radius:16px; padding:12px 16px; box-shadow: var(--shadow); margin-bottom:18px;
+    border: 2px solid transparent;
+  }
+  .search-box:focus-within{ border-color: var(--accent2); }
+  .search-box span.ic{ font-size:1.2rem; }
+  .search-box input{
+    flex:1; border:none; outline:none; font-size:1rem; background:transparent; color:var(--ink);
+  }
+  .search-hint{ font-size:.75rem; color:#9a8cb5; margin: -10px 4px 18px; }
+  #search-count{ font-size:.78rem; color:#8a7ba8; white-space:nowrap; }
+
+  .section-title{
+    display:flex; align-items:center; gap:10px; margin: 8px 4px 12px;
+    font-size:1.05rem; font-weight:700; color:#3d2f5c;
+  }
+  .section-title .dot{
+    width:10px;height:10px;border-radius:50%;
+    background: linear-gradient(135deg, var(--accent1), var(--accent4));
+  }
+
+  .menu-grid{ display:grid; grid-template-columns: 1fr; gap:12px; }
+  @media(min-width:640px){ .menu-grid{ grid-template-columns: 1fr 1fr; } }
+
+  .cmd-card{
+    background:#fff; border-radius:18px; padding:16px 16px 14px; box-shadow: var(--shadow);
+    border-top:4px solid var(--accent2); transition: transform .15s, opacity .15s;
+  }
+  .cmd-card.hide{ display:none; }
+  .cmd-card .code{
+    display:inline-block; font-family:"Consolas", monospace; font-weight:700;
+    background:#eef7ff; color:#2367a8; padding:3px 10px; border-radius:8px; font-size:.92rem;
+    margin-bottom:8px;
+  }
+  .cmd-card p{ margin:4px 0 0; font-size:.9rem; line-height:1.55; color:#4a4160; }
+  .cmd-card .tag{
+    display:inline-block; margin-top:8px; font-size:.68rem; font-weight:700;
+    color:#a05a00; background:#fff1da; padding:2px 8px; border-radius:999px;
+  }
+
+  .empty-state{
+    text-align:center; padding:30px 10px; color:#a598c2; font-size:.95rem; display:none;
+  }
+
+  footer{
+    text-align:center; font-size:.78rem; color:#8a7ba8; margin-top:28px; padding-bottom: 10px;
+  }
+  footer a{ color:#7a4fbf; text-decoration:none; font-weight:600; }
+
+  [data-lang="en"]{ display:none; }
+  body.lang-en [data-lang="id"]{ display:none; }
+  body.lang-en [data-lang="en"]{ display:block; }
+  body.lang-en .cmd-card [data-lang="en"]{ display:inline; }
+  body.lang-en .cmd-card p[data-lang="en"]{ display:block; }
+</style>
+</head>
+<body>
+
+<div class="blob blob1"></div>
+<div class="blob blob2"></div>
+<div class="blob blob3"></div>
+
+<div class="wrap">
+
+  <header>
+    <div class="brand">
+      <div class="logo">🛰️</div>
+      <div>
+        <h1>@MetaPhilosophiaBot</h1>
+        <p class="sub" data-lang="id">Panduan Penggunaan &amp; Menu Perintah</p>
+        <p class="sub" data-lang="en">Usage Guide &amp; Command Menu</p>
+      </div>
+    </div>
+    <div class="lang-toggle">
+      <button id="btn-id" class="active" onclick="setLang('id')">🇮🇩 Indonesia</button>
+      <button id="btn-en" onclick="setLang('en')">🇬🇧 English</button>
+    </div>
+  </header>
+
+  <!-- ===================== INTRO ===================== -->
+  <section class="card intro">
+    <div data-lang="id">
+      <h2>👋 Selamat Datang</h2>
+      <p>
+        <b>SENTINEL</b> adalah asisten di balik @MetaPhilosophiaBot — teman diskusi untuk menelusuri
+        istilah-istilah yang sering membingungkan, mulai dari filsafat, tasawuf, kalam, sampai sains
+        modern. Bot ini membantu menerjemahkan pertanyaan sehari-hari menjadi pemahaman yang lebih jernih,
+        lengkap dengan sisipan penjelas otomatis di titik-titik yang berpotensi ambigu.
+      </p>
+      <div class="quote">
+        "Upaya menjaga pijakan berpikir yang kokoh di tengah derasnya arus informasi dan istilah yang
+        mudah menyesatkan."
+      </div>
+      <p>
+        Ada dua kemampuan utama: <b>META Dialektika</b> yang otomatis menambahkan penjelas singkat di
+        setiap jawaban, dan mode <b>/meta</b> yang menjawab langsung dari catatan METAPhilosophia lengkap
+        dengan sisi penyeimbang dan solusi. Semua perintah bisa dicoba lewat menu di bawah — tinggal
+        ketik perintahnya di chat bot.
+      </p>
+      <div class="pill-row">
+        <span class="pill">💬 Chat bebas</span>
+        <span class="pill">🔍 Mode /meta</span>
+        <span class="pill">📖 Kamus /index</span>
+        <span class="pill">⚙️ Bisa disesuaikan</span>
+      </div>
+    </div>
+    <div data-lang="en">
+      <h2>👋 Welcome</h2>
+      <p>
+        <b>SENTINEL</b> is the assistant behind @MetaPhilosophiaBot — a discussion companion for
+        navigating terms that are often confusing, from philosophy, sufism, and theology to modern
+        science. The bot helps turn everyday questions into clearer understanding, complete with
+        automatic explanatory notes at points that could otherwise be ambiguous.
+      </p>
+      <div class="quote">
+        "An effort to keep a steady footing for thought amid the fast currents of information and
+        easily misleading terms."
+      </div>
+      <p>
+        There are two main capabilities: <b>META Dialectic</b>, which automatically adds short
+        explanatory notes to every answer, and <b>/meta</b> mode, which answers straight from the
+        METAPhilosophia notes — complete with a counterbalance and a rooted solution. Every command
+        below can be tried directly by typing it into the bot chat.
+      </p>
+      <div class="pill-row">
+        <span class="pill">💬 Free chat</span>
+        <span class="pill">🔍 /meta mode</span>
+        <span class="pill">📖 /index dictionary</span>
+        <span class="pill">⚙️ Customizable</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== SEARCH ===================== -->
+  <div class="search-box">
+    <span class="ic">🔎</span>
+    <input id="search-input" type="text"
+      data-ph-id="Cari perintah… contoh: 'ringkas jawab' atau 'jawab ringkas'"
+      data-ph-en="Search commands… e.g. 'short answer' or 'answer short'"
+      placeholder="Cari perintah… contoh: 'ringkas jawab' atau 'jawab ringkas'">
+    <span id="search-count"></span>
+  </div>
+  <p class="search-hint" data-lang="id">
+    Tip: ketik lebih dari satu kata dalam urutan apa saja, huruf besar/kecil tidak masalah. Contoh: "hapus riwayat" = "riwayat hapus".
+  </p>
+  <p class="search-hint" data-lang="en">
+    Tip: type more than one word in any order, case doesn't matter. Example: "clear history" = "history clear".
+  </p>
+
+  <!-- ===================== MENU ===================== -->
+  <div class="section-title"><span class="dot"></span>
+    <span data-lang="id">📋 Menu Perintah</span>
+    <span data-lang="en">📋 Command Menu</span>
+  </div>
+
+  <div class="menu-grid" id="menu-grid">
+
+    <div class="cmd-card" data-search="start mulai reset sambutan menu utama welcome begin main menu">
+      <span class="code">/start</span>
+      <p data-lang="id">Memulai ulang bot dan menampilkan pesan sambutan beserta menu utama.</p>
+      <p data-lang="en">Restarts the bot and shows the welcome message along with the main menu.</p>
+    </div>
+
+    <div class="cmd-card" data-search="help bantuan daftar perintah command list">
+      <span class="code">/help</span>
+      <p data-lang="id">Menampilkan daftar lengkap semua perintah yang tersedia untukmu.</p>
+      <p data-lang="en">Shows the full list of commands available to you.</p>
+    </div>
+
+    <div class="cmd-card" data-search="meta dokumen jawaban penyeimbang solusi document counterbalance rooted answer toggle">
+      <span class="code">/meta</span>
+      <p data-lang="id">Nyalakan/matikan mode jawaban dari dokumen META, lengkap dengan sisi penyeimbang ⚖️ dan solusi 🌿.</p>
+      <p data-lang="en">Toggle answers sourced from the META documents, complete with a counterbalance ⚖️ and a rooted solution 🌿.</p>
+      <span class="tag" data-lang="id">TOGGLE ON/OFF</span>
+      <span class="tag" data-lang="en">TOGGLE ON/OFF</span>
+    </div>
+
+    <div class="cmd-card" data-search="groq gemini cerebras mistral engine independen ganti pindah ai independent switch">
+      <span class="code">/groq · /gemini · /cerebras · /mistral</span>
+      <p data-lang="id">Pindah ke engine AI independen (tidak terikat dokumen META). Ketik nama yang sama untuk mematikan, ketik nama lain untuk berpindah engine.</p>
+      <p data-lang="en">Switch to an independent AI engine (not tied to the META documents). Type the same name again to turn it off, or a different name to switch engines.</p>
+      <span class="tag" data-lang="id">ENGINE</span>
+      <span class="tag" data-lang="en">ENGINE</span>
+    </div>
+
+    <div class="cmd-card" data-search="short ringkas satu paragraf singkat concise brief one paragraph">
+      <span class="code">/short</span>
+      <p data-lang="id">Jawaban diringkas menjadi satu paragraf saja.</p>
+      <p data-lang="en">Answers are condensed into a single paragraph.</p>
+    </div>
+
+    <div class="cmd-card" data-search="long panjang lengkap halaman full pages">
+      <span class="code">/long</span>
+      <p data-lang="id">Jawaban ditampilkan lengkap, dipecah per halaman jika panjang.</p>
+      <p data-lang="en">Answers are shown in full, split into pages when long.</p>
+    </div>
+
+    <div class="cmd-card" data-search="plain murni tanpa hiasan simple pure mode">
+      <span class="code">/plain</span>
+      <p data-lang="id">Mode META murni: jawaban selalu ringkas dan langsung dari dokumen, tanpa hiasan tambahan.</p>
+      <p data-lang="en">Pure META mode: answers are always concise and straight from the documents, with no extra embellishment.</p>
+    </div>
+
+    <div class="cmd-card" data-search="metadialektika sisipan penjelas dialektika pertanyaan explanatory insertion dialectic question">
+      <span class="code">/metadialektika [pertanyaan]</span>
+      <p data-lang="id">Menampilkan pertanyaanmu apa adanya, dengan sisipan penjelas ala META Dialektika di titik-titik ambigu.</p>
+      <p data-lang="en">Displays your question as-is, with META Dialectic explanatory notes inserted at ambiguous points.</p>
+    </div>
+
+    <div class="cmd-card" data-search="universal kalimat prinsip kontekstual bilingual sentence principle contextual">
+      <span class="code">/universal [kalimat]</span>
+      <p data-lang="id">Mengubah kalimat yang bersifat kontekstual menjadi prinsip yang lebih universal, dijawab dalam dua bahasa (ID+EN).</p>
+      <p data-lang="en">Turns a context-specific sentence into a more universal principle, answered in two languages (ID+EN).</p>
+    </div>
+
+    <div class="cmd-card" data-search="ask tanya cara pakai tutorial how to use">
+      <span class="code">/ask [pertanyaan]</span>
+      <p data-lang="id">Bertanya seputar cara memakai bot ini — jawabannya diambil langsung dari tutorial.</p>
+      <p data-lang="en">Ask about how to use this bot — the answer is pulled directly from the tutorial.</p>
+    </div>
+
+    <div class="cmd-card" data-search="clear reset hapus riwayat percakapan clear history conversation">
+      <span class="code">/clear · /reset</span>
+      <p data-lang="id">Menghapus riwayat percakapan, konteks dimulai dari nol lagi.</p>
+      <p data-lang="en">Clears the conversation history, starting fresh from zero.</p>
+    </div>
+
+    <div class="cmd-card" data-search="status info sesi mode aktif session active modes">
+      <span class="code">/status</span>
+      <p data-lang="id">Menampilkan mode-mode yang sedang aktif pada sesi kamu saat ini.</p>
+      <p data-lang="en">Shows which modes are currently active in your session.</p>
+    </div>
+
+    <div class="cmd-card" data-search="index kamus arsip istilah mini app dictionary archive glossary">
+      <span class="code">/index</span>
+      <p data-lang="id">Membuka Kamus METAPhilosophia — arsip istilah dan gagasan dalam bentuk mini app yang bisa dicari & ditelusuri.</p>
+      <p data-lang="en">Opens the METAPhilosophia Dictionary — an archive of terms and ideas as a mini app you can search and browse.</p>
+    </div>
+
+    <div class="cmd-card" data-search="chat bebas ngobrol biasa langsung free chat casual direct talk">
+      <span class="code">💬 <span data-lang="id">Ngobrol bebas</span><span data-lang="en">Free chat</span></span>
+      <p data-lang="id">Tidak wajib pakai perintah — ketik saja pertanyaanmu langsung, bot akan menjawab santai dengan sisipan META Dialektika otomatis.</p>
+      <p data-lang="en">No command required — just type your question directly, the bot will reply casually with automatic META Dialectic notes.</p>
+    </div>
+
+  </div>
+
+  <p class="empty-state" id="empty-state">
+    <span data-lang="id">Tidak ada perintah yang cocok. Coba kata kunci lain 🔍</span>
+    <span data-lang="en">No matching commands. Try different keywords 🔍</span>
+  </p>
+
+  <footer>
+    <span data-lang="id">Butuh diskusi lebih lanjut? Gabung di </span>
+    <span data-lang="en">Want to discuss further? Join </span>
+    <a href="https://t.me/meta_philosophia" target="_blank" rel="noopener">t.me/meta_philosophia</a>
+  </footer>
+
+</div>
+
+<script>
+  function setLang(lang){
+    document.body.classList.toggle('lang-en', lang === 'en');
+    document.getElementById('btn-id').classList.toggle('active', lang === 'id');
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+    var input = document.getElementById('search-input');
+    input.placeholder = lang === 'en' ? input.getAttribute('data-ph-en') : input.getAttribute('data-ph-id');
+    filterCards();
+  }
+
+  function filterCards(){
+    var query = document.getElementById('search-input').value.trim().toLowerCase();
+    var words = query.length ? query.split(/\s+/) : [];
+    var cards = document.querySelectorAll('.cmd-card');
+    var visibleCount = 0;
+
+    cards.forEach(function(card){
+      var haystack = (card.getAttribute('data-search') + ' ' + card.textContent).toLowerCase();
+      var matches = words.every(function(w){ return haystack.indexOf(w) !== -1; });
+      card.classList.toggle('hide', !matches);
+      if (matches) visibleCount++;
+    });
+
+    document.getElementById('empty-state').style.display = (words.length && visibleCount === 0) ? 'block' : 'none';
+
+    var countEl = document.getElementById('search-count');
+    if (words.length){
+      var lang = document.body.classList.contains('lang-en') ? 'en' : 'id';
+      countEl.textContent = lang === 'en' ? (visibleCount + ' found') : (visibleCount + ' ditemukan');
+    } else {
+      countEl.textContent = '';
+    }
+  }
+
+  document.getElementById('search-input').addEventListener('input', filterCards);
+</script>
+
+</body>
+</html>
