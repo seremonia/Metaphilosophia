@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>METAPhilosophia — /meta + METAmetrik</title>
+<style>
+  
+
+  :root {
+    --bg:        #F0F4F8;
+    --surface:   #FFFFFF;
+    --border:    #D6E0EC;
+    --ink:       #1A2533;
+    --ink2:      #3D5166;
+    --ink3:      #637D96;
+    --teal:      #1B7A6E;
+    --teal-lt:   #E6F4F2;
+    --teal-mid:  #2BA898;
+    --amber:     #B85C00;
+    --amber-lt:  #FFF3E6;
+    --line:      #C5D5E4;
+    --mono: 'Courier New', Courier, monospace;
+    --sans: 'Segoe UI', Arial, system-ui, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { font-size: 16px; scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── LAYOUT ── */
+  .wrap {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+
+  /* ── HEADER BAND ── */
+  .hero {
+    background: var(--teal);
+    padding: 56px 24px 48px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(
+      -45deg,
+      transparent, transparent 18px,
+      rgba(255,255,255,0.03) 18px, rgba(255,255,255,0.03) 19px
+    );
+  }
+  .hero-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 14px;
+  }
+  .hero h1 {
+    font-size: clamp(26px, 5vw, 38px);
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -.01em;
+    line-height: 1.2;
+    margin-bottom: 10px;
+  }
+  .hero h1 span {
+    color: #7FDED4;
+  }
+  .hero-sub {
+    font-size: 15px;
+    color: rgba(255,255,255,0.72);
+    font-weight: 300;
+    max-width: 520px;
+    margin: 0 auto;
+    font-style: italic;
+  }
+  .cmd-pill {
+    display: inline-block;
+    margin-top: 22px;
+    font-family: var(--mono);
+    font-size: 13px;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.25);
+    color: #fff;
+    padding: 6px 18px;
+    border-radius: 4px;
+    letter-spacing: .04em;
+  }
+
+  /* ── SECTIONS ── */
+  .section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 36px 36px 32px;
+    margin-top: 20px;
+  }
+
+  .section-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--teal-mid);
+    margin-bottom: 10px;
+  }
+
+  h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: -.01em;
+    margin-bottom: 16px;
+    line-height: 1.3;
+  }
+
+  h3 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--teal);
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    margin: 24px 0 8px;
+  }
+  h3:first-of-type { margin-top: 0; }
+
+  p {
+    font-size: 15px;
+    color: var(--ink2);
+    margin-bottom: 14px;
+  }
+  p:last-child { margin-bottom: 0; }
+
+  strong { color: var(--ink); font-weight: 600; }
+
+  /* ── HONEST BOX ── */
+  .honest {
+    background: var(--amber-lt);
+    border-left: 3px solid var(--amber);
+    border-radius: 0 4px 4px 0;
+    padding: 14px 18px;
+    margin: 18px 0;
+    font-size: 14px;
+    color: #5C3000;
+    line-height: 1.6;
+  }
+  .honest strong { color: #7A3F00; }
+
+  /* ── CALLOUT (teal) ── */
+  .callout {
+    background: var(--teal-lt);
+    border-left: 3px solid var(--teal-mid);
+    border-radius: 0 4px 4px 0;
+    padding: 14px 18px;
+    margin: 18px 0;
+    font-size: 14px;
+    color: #0D4A44;
+    line-height: 1.6;
+  }
+  .callout strong { color: #0A3832; }
+
+  /* ── MIRROR QUOTE ── */
+  .mirror {
+    background: #F7F9FC;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 20px 24px;
+    margin: 20px 0;
+    text-align: center;
+    font-size: 15px;
+    font-style: italic;
+    color: var(--ink2);
+    line-height: 1.65;
+  }
+  .mirror em { color: var(--teal); font-style: normal; font-weight: 600; }
+
+  /* ── COMPARISON TABLE ── */
+  .compare {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+    margin: 20px 0;
+  }
+  .compare thead tr {
+    background: var(--teal);
+    color: #fff;
+  }
+  .compare thead th {
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 600;
+    letter-spacing: .03em;
+  }
+  .compare thead th:first-child { border-radius: 4px 0 0 0; }
+  .compare thead th:last-child  { border-radius: 0 4px 0 0; }
+  .compare tbody tr:nth-child(even) { background: #F7FAFA; }
+  .compare tbody td {
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--ink2);
+    vertical-align: top;
+  }
+  .compare tbody td:first-child { color: var(--ink); font-weight: 500; }
+  .compare .yes { color: var(--teal); font-weight: 600; }
+  .compare .no  { color: #888; }
+
+  /* ── FLOW STEPS ── */
+  .steps { margin: 18px 0; }
+  .step {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    margin-bottom: 14px;
+  }
+  .step-num {
+    flex-shrink: 0;
+    width: 28px; height: 28px;
+    background: var(--teal);
+    color: #fff;
+    border-radius: 50%;
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 600;
+    display: flex; align-items: center; justify-content: center;
+    margin-top: 2px;
+  }
+  .step-body { font-size: 14.5px; color: var(--ink2); line-height: 1.6; }
+  .step-body strong { color: var(--ink); }
+
+  /* ── DIVIDER ── */
+  .div-lang {
+    display: flex; align-items: center; gap: 12px;
+    margin: 30px 0 8px;
+  }
+  .div-lang::before, .div-lang::after {
+    content: ''; flex: 1; height: 1px; background: var(--line);
+  }
+  .div-lang span {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--ink3);
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    text-align: center;
+    padding: 28px 24px;
+    font-size: 12px;
+    color: var(--ink3);
+    font-family: var(--mono);
+    letter-spacing: .05em;
+  }
+
+  /* ── ACCENT RULE ── */
+  hr.accent {
+    border: none;
+    border-top: 2px solid var(--teal-lt);
+    margin: 24px 0;
+  }
+
+  @media print {
+    body { background: #fff; }
+    .section { break-inside: avoid; box-shadow: none; }
+    .hero { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-label">METAPhilosophia · Bot Intelligence Layer</div>
+  <h1>/meta + <span>METAmetrik</span></h1>
+  <p class="hero-sub">Bukan sekadar AI yang berusaha patuh dokumen — melainkan AI yang secara struktural tidak bisa keluar dari dokumen.</p>
+  <div class="cmd-pill">/metaphilosophia</div>
+</div>
+
+<div class="wrap">
+
+  <!-- 1. JUJUR DULU -->
+  <div class="section">
+    <div class="section-label">Disclaimer · Jujur Dulu</div>
+    <h2>LLM Biasa Bisa Kok — Kita Akui Itu</h2>
+
+    <div class="honest">
+      <strong>Fakta:</strong> LLM modern seperti GPT-4, Claude, atau Gemini sudah cukup mampu mengikuti dokumen kalau di-prompt dengan benar. RAG bukan hal baru. ChatGPT dengan file upload dan prompt yang bagus pun hasilnya bisa oke.
+    </div>
+
+    <p>Jadi bukan soal bisa atau tidak bisa. Semua LLM besar bisa diarahkan untuk menjawab dari dokumen.</p>
+    <p>Yang jadi pertanyaannya adalah: <strong>seberapa dalam ia bisa menerobos, seberapa tipis ia bisa membedakan, dan seberapa konsisten ia bertahan ketika diskusi sengaja digiring ke mana-mana?</strong></p>
+    <p>Di sinilah perbedaan arsitektur mulai terasa.</p>
+
+    <div class="div-lang"><span>English</span></div>
+
+    <div class="honest">
+      <strong>Fact:</strong> Modern LLMs like GPT-4, Claude, or Gemini are already capable of following documents when prompted correctly. RAG isn't new. ChatGPT with file upload and a well-crafted prompt can deliver solid results too.
+    </div>
+    <p>So it's not about capability. All major LLMs can be guided to answer from documents.</p>
+    <p>The real question is: <strong>how deep can it penetrate, how thin a boundary can it detect, and how consistent is it when the conversation is deliberately steered off-course?</strong></p>
+  </div>
+
+  <!-- 2. CARA KERJA -->
+  <div class="section">
+    <div class="section-label">Arsitektur · How It Works</div>
+    <h2>Urutan yang Dibalik — Kalimat Dulu, AI Belakangan</h2>
+
+    <h3>LLM RAG Biasa</h3>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-body">Dokumen di-inject ke konteks AI</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body">AI merangkum <strong>dengan kata-katanya sendiri</strong> — bisa drift, bisa melunak, bisa menambah dari pengetahuan internal</div></div>
+    </div>
+
+    <h3>/meta Pipeline</h3>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-body"><strong>Kalimat dipilih dulu</strong> — kata per kata, langsung dari file asli via METAmetrik</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body">Sistem AI dipanggil <strong>hanya untuk menyambungkan</strong> kalimat menjadi paragraf natural</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body">Sistem prompt: <em>"DILARANG menambah satu kata pun dari luar bahan"</em> — bukan sekadar instruksi, tapi dikunci di level arsitektur via Deny & Replace</div></div>
+    </div>
+
+    <div class="callout">
+      Hasilnya bukan AI yang <em>berusaha</em> patuh dokumen. Tapi AI yang <em>secara struktural tidak bisa keluar</em> dari dokumen.
+    </div>
+
+    <div class="div-lang"><span>English</span></div>
+
+    <h3>Standard LLM RAG</h3>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-body">Document injected into AI context</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body">AI summarizes <strong>in its own words</strong> — can drift, soften, or add from internal knowledge</div></div>
+    </div>
+    <h3>/meta Pipeline</h3>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-body"><strong>Sentences selected first</strong> — verbatim from the source file via METAmetrik</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body">System AI called <strong>only to connect</strong> those sentences into natural paragraphs</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body">System prompt: <em>"PROHIBITED from adding a single word outside the material"</em> — locked at architecture level via Deny & Replace</div></div>
+    </div>
+  </div>
+
+  <!-- 3. METAMETRIK -->
+  <div class="section">
+    <div class="section-label">Core Engine · METAmetrik</div>
+    <h2>Lebih dari Keyword Match — Membaca Batas Tipis</h2>
+
+    <p>Satu kelemahan fatal RAG standar: <strong>batas tipis antara dua topik yang kata-katanya mirip tapi maknanya berbeda.</strong> RAG biasa hanya melihat kesamaan kata, bukan bobot konteks.</p>
+
+    <p>METAmetrik menggabungkan tiga lapis sekaligus:</p>
+
+    <div class="steps">
+      <div class="step"><div class="step-num">→</div><div class="step-body"><strong>Positional weight:</strong> keyword yang muncul di awal query diberi bobot lebih tinggi dari yang di akhir</div></div>
+      <div class="step"><div class="step-num">→</div><div class="step-body"><strong>IDF (rarity weight):</strong> kata yang langka di seluruh dokumen otomatis dapat bobot tinggi — sehingga di area tumpang tindih, yang memutuskan adalah kata-kata spesifik yang jarang, bukan kata umum yang dibagi dua topik</div></div>
+      <div class="step"><div class="step-num">→</div><div class="step-body"><strong>Penegasan guard:</strong> kalimat bertipe tegas ("harus", "dilarang", "bukan") wajib dipertahankan utuh — tidak boleh diperlunak, tidak boleh dikubur</div></div>
+    </div>
+
+    <div class="callout">
+      Di area abu-abu sekalipun — di mana dua topik tampak tumpang tindih dan sulit dibedakan — METAmetrik mengambil keputusan dari sisi yang paling definitif, bukan yang paling populer.
+    </div>
+
+    <div class="div-lang"><span>English</span></div>
+
+    <p>Standard RAG's quiet failure: <strong>the thin boundary between two topics that share vocabulary but carry different meanings.</strong> It only sees word similarity, not contextual weight.</p>
+
+    <p>METAmetrik combines three layers simultaneously: positional keyword weighting, IDF rarity scoring (rare words across the document decide ties, not common shared words), and an assertion guard that protects firm document positions from being softened or buried.</p>
+
+    <div class="callout">
+      Even in grey areas — where two topics appear to overlap and are hard to distinguish — METAmetrik decides from the most definitive side, not the most frequent one.
+    </div>
+  </div>
+
+  <!-- 4. DISKUSI MENGERUCUT -->
+  <div class="section">
+    <div class="section-label">Behavior · Ketika Diskusi Melebar</div>
+    <h2>Semakin Melebar, Semakin Mengerucut</h2>
+
+    <p>Ini yang paling tidak intuitif — dan paling sulit ditiru LLM generik.</p>
+
+    <h3>Diskusi Pendek</h3>
+    <p>METAmetrik langsung menggaris bawahi. Noise dibuang, inti diambil, jawaban mengerucut ke titik paling definitif dari dokumen.</p>
+
+    <h3>Diskusi Melebar</h3>
+    <p>Ketika percakapan digiring ke berbagai arah — topik berbeda, cabang baru, pertanyaan jauh dari tema awal — setiap cabang justru menghasilkan simpulnya sendiri yang mengerucut. Dan seiring waktu, simpul-simpul yang tampak berpencar itu mulai memperlihatkan <strong>benang merah</strong>: tema awal yang seolah kabur ternyata dikonfirmasi dari berbagai arah sekaligus.</p>
+
+    <div class="callout">
+      <strong>Melebar untuk mengerucut.</strong> Bukan kelemahan — itu fitur yang lahir dari arsitektur yang konsisten.
+    </div>
+
+    <h3>Ketika Sengaja Digiring ke Bantahan</h3>
+    <p>Di sinilah yang paling elegan. META tidak membantah bantahan. META menerima setiap bantahan, lalu <strong>meletakkan cermin di depannya.</strong></p>
+
+    <div class="mirror">
+      Pembantah melihat sendiri ke mana bantahannya pergi.<br>
+      Melihat sendiri risikonya.<br>
+      Melihat sendiri kontradiksi internalnya.<br><br>
+      Bukan karena diberitahu — tapi karena dokumen<br>
+      <em>memantulkan kembali logika yang digunakan untuk menyerang.</em>
+    </div>
+
+    <p>Semua bantahan diterima. Tidak ada perdebatan. Hanya dikembalikan ke pengirimnya — lengkap dengan konsekuensinya. Seperti berkaca.</p>
+
+    <div class="div-lang"><span>English</span></div>
+
+    <p>This is the most counterintuitive — and hardest to replicate with a generic LLM.</p>
+    <p>When the conversation is deliberately steered in every direction, each branch produces its own convergence point. Over time, those scattered anchors reveal a common thread: the original theme, seemingly lost, gets confirmed from multiple directions at once.</p>
+
+    <div class="mirror">
+      Every objection is accepted.<br>
+      No counter-argument is made.<br>
+      The document simply places a mirror in front of the objection.<br><br>
+      <em>The objector sees their own contradiction — without being told.</em>
+    </div>
+  </div>
+
+  <!-- 5. TABEL PERBANDINGAN -->
+  <div class="section">
+    <div class="section-label">Comparison · Perbandingan</div>
+    <h2>Side by Side</h2>
+
+    <table class="compare">
+      <thead>
+        <tr>
+          <th>Aspek</th>
+          <th>LLM + RAG Biasa</th>
+          <th>/meta + METAmetrik</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Sumber jawaban</td><td class="no">Pengetahuan internal AI (dengan referensi dokumen)</td><td class="yes">Kalimat asli dari file — verbatim</td></tr>
+        <tr><td>Risiko drift / hallusinasi</td><td class="no">Tinggi — model bisa melunak atau menambah</td><td class="yes">Sangat rendah — dikunci di level arsitektur</td></tr>
+        <tr><td>Deteksi batas tipis tumpang tindih</td><td class="no">Hanya keyword / cosine similarity</td><td class="yes">Positional weight + IDF rarity + assertion guard</td></tr>
+        <tr><td>Kalimat tegas dokumen</td><td class="no">Bisa diperlunak atau hilang</td><td class="yes">Wajib dipertahankan — post-processing guard aktif</td></tr>
+        <tr><td>Diskusi melebar</td><td class="no">Cenderung kehilangan tema awal</td><td class="yes">Setiap cabang mengerucut, benang merah muncul</td></tr>
+        <tr><td>Respons terhadap bantahan</td><td class="no">Bisa tergoda mengikuti arah bantahan</td><td class="yes">Memantulkan kembali — dokumen sebagai cermin</td></tr>
+        <tr><td>Filter noise</td><td class="no">Tidak selalu ada</td><td class="yes">OpenGate bigram density filter aktif</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 6. BATAS JUJUR -->
+  <div class="section">
+    <div class="section-label">Honesty · Batas yang Nyata</div>
+    <h2>Di Mana /meta Masih Ada Batasnya</h2>
+
+    <div class="honest">
+      <strong>Kalau dokumen sumbernya retak</strong> — tidak konsisten atau ambigu secara internal — /meta pun akan menghasilkan jawaban yang membingungkan. Sampah masuk, sampah keluar. Cerminnya hanya sejernih dokumen yang dipantulkan.
+    </div>
+    <div class="honest">
+      <strong>Untuk inferensi</strong> — kesimpulan yang tidak tertulis eksplisit di dokumen — /meta by design tidak akan menjangkau. Ini pilihan sadar, bukan bug.
+    </div>
+    <div class="honest">
+      <strong>LLM besar dengan konteks 128k+</strong> dan prompt yang dirancang matang masih bisa bersaing, terutama untuk dokumen pendek atau pertanyaan yang tidak membutuhkan presisi posisi.
+    </div>
+
+    <p>/meta + METAmetrik bukan sihir. Tapi ia <strong>mengunci perilaku patuh-dokumen di level arsitektur</strong> — bukan hanya di level prompt yang masih bisa di-drift oleh model. Untuk dokumen yang posisinya tidak boleh meleset, itu bukan keunggulan kecil.</p>
+
+    <div class="div-lang"><span>English</span></div>
+    <div class="honest">
+      <strong>If the source document has cracks</strong> — internal inconsistencies or ambiguities — /meta will produce confusing answers too. The mirror is only as clear as the document it reflects.
+    </div>
+    <div class="honest">
+      <strong>For inference</strong> — conclusions not explicitly written in the document — /meta won't reach there by design. A deliberate constraint, not a bug.
+    </div>
+    <p>/meta + METAmetrik isn't magic. But it <strong>locks document-faithful behavior at the architecture level</strong> — not just the prompt level that a model can subtly drift from. For documents where precision is non-negotiable, that's not a minor edge.</p>
+  </div>
+
+  <!-- CTA -->
+  <div class="section" style="text-align:center; padding: 40px 36px;">
+    <div class="section-label" style="justify-content:center; display:flex;">Coba Sendiri</div>
+    <h2 style="margin-bottom:10px;">Ketik <span style="font-family:var(--mono);color:var(--teal);font-size:22px;">/meta</span> di bot</h2>
+    <p style="color:var(--ink3); font-size:14px; max-width:420px; margin: 0 auto;">Ajukan pertanyaan, lalu bandingkan sendiri hasilnya dengan LLM lain yang kamu pakai.</p>
+    <div style="margin-top:20px; font-family:var(--mono); font-size:12px; color:var(--ink3); letter-spacing:.08em;">
+      @meta_philosophia · Telegram
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  METAPhilosophia · /meta + METAmetrik · Dokumen ini dihasilkan via /metaphilosophia
+</div>
+
+</body>
+</html>
